@@ -1,7 +1,7 @@
 const College = require('../models/college');
 
 
-
+// Get a college by ID (Detailed data)
 export const databyId = async (req, res) => {
     const collegeId = req.params.id;
     try {
@@ -19,6 +19,7 @@ export const databyId = async (req, res) => {
     }
 }
 
+// Get all colleges
 export const filterData = async (req, res) => {
     const filter = {};
 
@@ -35,6 +36,7 @@ export const filterData = async (req, res) => {
     }
 }
 
+// Get all colleges with search and filter options (Day 2 task)
 export const getAllData = async (req, res) => {
     try {
         const colleges = await College.find({});
@@ -44,6 +46,7 @@ export const getAllData = async (req, res) => {
     }
 }
 
+// Create a new college (Day 1 task)
 export const createCollege = async (req, res) => {
     const college = new College(req.body);
     college.save((err, college) => {
