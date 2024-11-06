@@ -2,7 +2,7 @@ const College = require('../models/college');
 
 
 // Get a college by ID (Detailed data)
-export const databyId = async (req, res) => {
+const dataById = async (req, res) => {
     const collegeId = req.params.id;
     try {
         const college = await College.findById(collegeId);
@@ -20,24 +20,25 @@ export const databyId = async (req, res) => {
 }
 
 // Get all colleges
-export const filterData = async (req, res) => {
+const filterData = async (req, res) => {
     const filter = {};
 
     if (req.query.name) filter.name = { $regex: req.query.name, $options: 'i' };
     if (req.query.city) filter.city = { $regex: req.query.city, $options: 'i' };
     if (req.query.courses) filter.courses = { $in: req.query.courses.split(',') };
 
+    // console.log("Filter applied:", filter);
     try {
         const colleges = await College.find(filter);
         res.json(colleges);
     } catch (err) {
         console.error('Error fetching colleges:', err);
-        res.status(500).send('Error fetching colleges');
+        res.status(500).json({ message: 'Error fetching colleges' });
     }
 }
 
 // Get all colleges with search and filter options (Day 2 task)
-export const getAllData = async (req, res) => {
+const getAllData = async (req, res) => {
     try {
         const colleges = await College.find({});
         res.json(colleges);
@@ -47,7 +48,7 @@ export const getAllData = async (req, res) => {
 }
 
 // Create a new college (Day 1 task)
-export const createCollege = async (req, res) => {
+const createCollege = async (req, res) => {
     const college = new College(req.body);
     college.save((err, college) => {
         if (err) {
@@ -57,3 +58,5 @@ export const createCollege = async (req, res) => {
         }
     });
 }
+
+module.exports = {dataById,filterData, getAllData, createCollege};
