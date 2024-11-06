@@ -32,7 +32,7 @@ router.get('/colleges', async (req, res) => {
     }
 });
 
-// Get all colleges with search and filter options
+// Get all colleges with search and filter options (Day 2 task)
 router.get('/colleges', async (req, res) => {
     const filter = {};
 
@@ -49,7 +49,7 @@ router.get('/colleges', async (req, res) => {
     }
 });
 
-// Create a new college
+// Create a new college (Day 1 task)
 router.post('/colleges', (req, res) => {
     const college = new College(req.body);
     college.save((err, college) => {
