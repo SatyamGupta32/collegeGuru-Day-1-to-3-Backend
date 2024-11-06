@@ -3,6 +3,8 @@ const College = require('../models/college');
 
 
 const router = express.Router();
+
+// Get a college by ID (Detailed data)
 router.get('/colleges/:id', async (req, res) => {
     const collegeId = req.params.id;
     try {
@@ -20,6 +22,7 @@ router.get('/colleges/:id', async (req, res) => {
     }
 });
 
+// Get all colleges
 router.get('/colleges', async (req, res) => {
     try {
         const colleges = await College.find({});
@@ -29,6 +32,7 @@ router.get('/colleges', async (req, res) => {
     }
 });
 
+// Get all colleges with search and filter options
 router.get('/colleges', async (req, res) => {
     const filter = {};
 
@@ -45,16 +49,7 @@ router.get('/colleges', async (req, res) => {
     }
 });
 
-router.get('/colleges', (req, res) => {
-    College.find({}, (err, colleges) => {
-        if (err) {
-            res.status(500).send('Error fetching colleges');
-        } else {
-            res.json(colleges);
-        }
-    });
-});
-
+// Create a new college
 router.post('/colleges', (req, res) => {
     const college = new College(req.body);
     college.save((err, college) => {
