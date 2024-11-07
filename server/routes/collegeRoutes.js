@@ -1,5 +1,6 @@
 const express = require('express');
-const { dataById, filterData, createCollege } = require('../controller/collegeController');
+const { dataById, filterData, createCollege, updateCollege } = require('../controller/collegeController');
+const checkAdmin = require('../middleware/checkAdmin');
 
 const router = express.Router();
 
@@ -11,5 +12,8 @@ router.get('/colleges', filterData);
 
 // Create a new college
 router.post('/colleges', createCollege);
+
+// Update college (only accessible to admins)
+router.put('/colleges/:id', checkAdmin, updateCollege);
 
 module.exports = router;
