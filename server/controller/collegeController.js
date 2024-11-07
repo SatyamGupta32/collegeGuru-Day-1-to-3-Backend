@@ -59,4 +59,18 @@ const createCollege = async (req, res) => {
     });
 }
 
-module.exports = {dataById,filterData, getAllData, createCollege};
+const updateCollege = async (req, res) => {
+    const collegeId = req.params.id;
+    try {
+        const college = await College.findByIdAndUpdate(collegeId, req.body, { new: true });
+        if (!college) {
+            return res.status(404).json({ message: 'College not found' });
+        }
+        res.json({ message: 'College updated successfully', college });
+    } catch (error) {
+        console.error('Error updating college:', error);
+        res.status(500).json({ message: 'Error updating college' });
+    }
+};
+
+module.exports = {dataById,filterData, getAllData, createCollege, updateCollege};

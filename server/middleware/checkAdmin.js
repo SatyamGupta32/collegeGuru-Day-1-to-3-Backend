@@ -1,4 +1,4 @@
-// server/middleware/checkAdmin.js
+// server/middleware/Admin.js
 const checkAdmin = (req, res, next) => {
     if (req.user && req.user.role === 'admin') {
         next(); 

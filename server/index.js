@@ -12,10 +12,7 @@ const app = express();
 const port = 3000;
 
 // Database connection
-mongoose.connect('mongodb://localhost:27017/colleges', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
+mongoose.connect('mongodb://localhost:27017/colleges')
     .then(async () => {
         console.log('MongoDB connected');
 
