@@ -1,18 +1,21 @@
+require('dotenv').config({ path: '.env.local' });
+
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const collegeRoutes = require('./routes/collegeRoutes');
-const userRoutes = require('./routes/userRoutes'); // Import userRoutes
+const userRoutes = require('./routes/userRoutes');
 const collegesData = require('./collegeData');
 const userData = require('./userData');
 const College = require('./models/college');
 const User = require('./models/user');
 
+
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Database connection
-mongoose.connect('mongodb://localhost:27017/colleges')
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/colleges')
     .then(async () => {
         console.log('MongoDB connected');
 
@@ -39,7 +42,8 @@ app.use(bodyParser.json());
 
 // Routes
 app.use('/api', collegeRoutes);
-app.use('/api/users', userRoutes);
+app.use('/api', userRoutes);
+app.use(require('./middleware/errorHandler'));
 
 // Start the server
 app.listen(port, () => {

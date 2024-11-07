@@ -16,14 +16,13 @@ const getUserById = async (req, res) => {
     }
 };
 
-// Get all users with optional filter by role
+// Get all users with optional filters for role, name, or email
 const filterUsers = async (req, res) => {
     const filter = {};
-    
     if (req.query.role) filter.role = req.query.role;
     if (req.query.name) filter.name = { $regex: req.query.name, $options: 'i' };
     if (req.query.email) filter.email = { $regex: req.query.email, $options: 'i' };
-    
+
     try {
         const users = await User.find(filter);
         res.json(users);

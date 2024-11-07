@@ -1,64 +1,61 @@
+// server/controller/collegeController.js
 const College = require('../models/college');
 
-
-// Get a college by ID (Detailed data)
+// Get a college by ID (detailed data)
 const dataById = async (req, res) => {
     const collegeId = req.params.id;
     try {
         const college = await College.findById(collegeId);
         if (!college) {
-            return res.status(404).json({
-                message: 'College not found'
-            });
+            return res.status(404).json({ message: 'College not found' });
         }
-        console.log('College:', college);
         res.json(college);
     } catch (error) {
         console.error('Error fetching college:', error);
         res.status(500).json({ message: 'Server Error' });
     }
-}
+};
 
-// Get all colleges
+// Get colleges with filters for name, city, and courses
 const filterData = async (req, res) => {
     const filter = {};
-
     if (req.query.name) filter.name = { $regex: req.query.name, $options: 'i' };
     if (req.query.city) filter.city = { $regex: req.query.city, $options: 'i' };
     if (req.query.courses) filter.courses = { $in: req.query.courses.split(',') };
 
-    // console.log("Filter applied:", filter);
     try {
         const colleges = await College.find(filter);
         res.json(colleges);
-    } catch (err) {
-        console.error('Error fetching colleges:', err);
+    } catch (error) {
+        console.error('Error fetching colleges:', error);
         res.status(500).json({ message: 'Error fetching colleges' });
     }
-}
+};
 
-// Get all colleges with search and filter options (Day 2 task)
+// Get all colleges
 const getAllData = async (req, res) => {
     try {
         const colleges = await College.find({});
         res.json(colleges);
-    } catch (err) {
-        res.status(500).send('Error fetching colleges');
+    } catch (error) {
+        console.error('Error fetching colleges:', error);
+        res.status(500).json({ message: 'Error fetching colleges' });
     }
-}
+};
 
-// Create a new college (Day 1 task)
+// Create a new college
 const createCollege = async (req, res) => {
     const college = new College(req.body);
-    college.save((err, college) => {
-        if (err) {
-            res.status(500).send('Error creating college');
-        } else {
-            res.json(college);
-        }
-    });
-}
+    try {
+        await college.save();
+        res.status(201).json({ message: 'College created successfully', college });
+    } catch (error) {
+        console.error('Error creating college:', error);
+        res.status(500).json({ message: 'Error creating college' });
+    }
+};
 
+// Update a college by ID
 const updateCollege = async (req, res) => {
     const collegeId = req.params.id;
     try {
@@ -73,4 +70,10 @@ const updateCollege = async (req, res) => {
     }
 };
 
-module.exports = {dataById,filterData, getAllData, createCollege, updateCollege};
+module.exports = {
+    dataById,
+    filterData,
+    getAllData,
+    createCollege,
+    updateCollege
+};
