@@ -1,8 +1,25 @@
-# React + Vite
+### College Management System
+This project is a simple College Management System with a React frontend and a backend built using Express and MongoDB. The application allows users to search, filter, and view detailed college listings.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Technologies Used:
+- Frontend: React + Vite
+- Backend: Express.js + MongoDB
+- Database: MongoDB (for storing college data)
 
-Currently, two official plugins are available:
+### Getting Started
+## Prerequisites:
+- Node.js (v16 or higher)
+- MongoDB (either local or a cloud instance like MongoDB Atlas)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Installation
+
+Backend Setup:
+
+# Clone the repository:
+
+```
+git clone https://github.com/SatyamGupta32/collegeGuru-Day-1-and-2-Backend.git
+```
+``` 
+cd  collegeGuru-Day-1-and-2-Backend
+```
