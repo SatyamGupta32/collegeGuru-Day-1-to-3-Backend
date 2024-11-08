@@ -8,16 +8,16 @@ const checkAdmin = require('../middleware/checkAdmin')
 const router = express.Router();
 
 // Get a user by ID (accessible to the user themselves and admins)
-router.get('/:id',checkRole, getUserById);
+router.get('/getUser/:id',checkRole, getUserById);
 
 // Get all  (admin-only access)
-router.get('/',checkAdmin, filterUsers);
+router.get('/filterUser',checkAdmin, filterUsers);
 
 // Create a new user
-router.post('/', validateRequest, createUser);
+router.post('/createUser', validateRequest, createUser);
 
 // Update user (admin-only)
-router.put('/:id',checkAdmin, validateRequest, updateUser);
+router.put('/updateUser/:id',checkAdmin, validateRequest, updateUser);
 
 // Error handler
 router.use(errorHandler);
