@@ -2,16 +2,17 @@ const express = require('express');
 const { dataById, filterData, createCollege, updateCollege } = require('../controller/collegeController');
 const checkAdmin = require('../middleware/checkAdmin');
 const errorHandler = require('../middleware/errorHandler');
+const verifyToken = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
 // Public routes
-router.get('/colleges/:id', dataById);
-router.get('/colleges', filterData);
+router.get('/:id', dataById);
+router.get('/', filterData);
 
 // Admin-only routes
-router.post('/colleges', checkAdmin, createCollege);
-router.put('/colleges/:id', checkAdmin, updateCollege);
+router.post('/', verifyToken, checkAdmin, createCollege);
+router.put('/:id', verifyToken, checkAdmin, updateCollege);
 
 // Error handler
 router.use(errorHandler);

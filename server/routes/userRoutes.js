@@ -3,20 +3,21 @@ const { getUserById, filterUsers, createUser, updateUser } = require('../control
 const validateRequest = require('../middleware/validateRequest');
 const checkRole = require('../middleware/roleCheck');
 const errorHandler = require('../middleware/errorHandler');
+const verifyToken = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
 // Get a user by ID (accessible to the user themselves and admins)
-router.get('/users/:id', checkRole(['user', 'admin']), getUserById);
+router.get('/:id',verifyToken, checkRole(['user', 'admin']), getUserById);
 
-// Get all users (admin-only access)
-router.get('/users', checkRole(['admin']), filterUsers);
+// Get all  (admin-only access)
+router.get('/',verifyToken, checkRole(['admin']), filterUsers);
 
 // Create a new user
-router.post('/users', validateRequest, createUser);
+router.post('/', validateRequest, createUser);
 
 // Update user (admin-only)
-router.put('/users/:id', checkRole(['admin']), validateRequest, updateUser);
+router.put('/:id',verifyToken, checkRole(['admin']), validateRequest, updateUser);
 
 // Error handler
 router.use(errorHandler);

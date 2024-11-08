@@ -2,8 +2,8 @@ require('dotenv').config({ path: '.env.local' });
 const mongoose = require('mongoose');
 const College = require('../models/college');
 const User = require('../models/user');
-const collegesData = require('../data/collegeData');
-const userData = require('../data/userData');
+const collegesData = require('../collegeData');
+const userData = require('../userData');
 
 const connectDB = async () => {
     try {

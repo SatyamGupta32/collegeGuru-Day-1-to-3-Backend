@@ -39,25 +39,34 @@ const generateToken = (user) => {
 };
 
 // Create a new user with token generation
+// Create a new user with token generation
 const createUser = async (req, res) => {
     const user = new User(req.body);
     try {
         await user.save();
         
-        // Generate and add token
+        // Generate token (but do not save it in the database)
         const token = generateToken(user);
-        user.token = token;
-        await user.save();
 
-        res.status(201).json({ message: 'User created successfully', user });
+        res.status(201).json({
+            message: 'User created successfully',
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role
+            },
+            token // Send the token directly in the response
+        });
     } catch (error) {
-        console.error('Error creating user:', error); // Logs the full error
+        console.error('Error creating user:', error);
         if (error.code === 11000) {
             return res.status(400).json({ message: 'Email already exists' });
         }
         res.status(500).json({ message: 'Error creating user' });
     }
 };
+
 
 
 // Update user by ID (only accessible to admins)
