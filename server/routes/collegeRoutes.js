@@ -5,19 +5,15 @@ const errorHandler = require('../middleware/errorHandler');
 
 const router = express.Router();
 
-// Get a college by ID (accessible to all users)
+// Public routes
 router.get('/colleges/:id', dataById);
-
-// Get all colleges with search and filter options (accessible to all users)
 router.get('/colleges', filterData);
 
-// Create a new college (only accessible to admins)
+// Admin-only routes
 router.post('/colleges', checkAdmin, createCollege);
-
-// Update college (only accessible to admins)
 router.put('/colleges/:id', checkAdmin, updateCollege);
 
-// Use error handler middleware to catch all errors
+// Error handler
 router.use(errorHandler);
 
 module.exports = router;

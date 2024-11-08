@@ -1,4 +1,6 @@
 // keys.js
-module.exports = {
+keysJWT = {
     jwtSecret:process.env.JWT_SECRET
 };
+
+module.exports = keysJWT

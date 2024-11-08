@@ -1,25 +1,24 @@
 const express = require('express');
 const { getUserById, filterUsers, createUser, updateUser } = require('../controller/userController');
 const validateRequest = require('../middleware/validateRequest');
+const checkRole = require('../middleware/roleCheck');
 const errorHandler = require('../middleware/errorHandler');
-const checkRole = require('../middleware/roleCheck'); // For other roles if needed
-const checkAdmin = require('../middleware/checkAdmin'); // Admin-specific access
 
 const router = express.Router();
 
 // Get a user by ID (accessible to the user themselves and admins)
-router.get('/users/:id', checkRole('user'), getUserById);
+router.get('/users/:id', checkRole(['user', 'admin']), getUserById);
 
-// Get all users with search and filter options (accessible to admins only)
-router.get('/users', checkAdmin, filterUsers);
+// Get all users (admin-only access)
+router.get('/users', checkRole(['admin']), filterUsers);
 
-// Create a new user (no role restriction, but request validation)
+// Create a new user
 router.post('/users', validateRequest, createUser);
 
-// Update user (only accessible to admins)
-router.put('/users/:id', checkAdmin, validateRequest, updateUser);
+// Update user (admin-only)
+router.put('/users/:id', checkRole(['admin']), validateRequest, updateUser);
 
-// Use error handler middleware to catch all errors
+// Error handler
 router.use(errorHandler);
 
 module.exports = router;
