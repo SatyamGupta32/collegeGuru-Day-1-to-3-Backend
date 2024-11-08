@@ -17,20 +17,24 @@ const dataById = async (req, res) => {
 };
 
 // Get colleges with filters for name, city, and courses
-const filterData = async (req, res) => {
+const filterData = async (req, res) => { 
     const filter = {};
+    
+    // Apply filters based on query parameters
     if (req.query.name) filter.name = { $regex: req.query.name, $options: 'i' };
     if (req.query.city) filter.city = { $regex: req.query.city, $options: 'i' };
     if (req.query.courses) filter.courses = { $in: req.query.courses.split(',') };
 
     try {
+        // Query the database to find the filtered colleges
         const colleges = await College.find(filter);
-        res.json(colleges);
+        res.json(colleges);  // Respond with the filtered colleges
     } catch (error) {
         console.error('Error fetching colleges:', error);
         res.status(500).json({ message: 'Error fetching colleges' });
     }
 };
+
 
 // Get all colleges
 const getAllData = async (req, res) => {
@@ -45,7 +49,20 @@ const getAllData = async (req, res) => {
 
 // Create a new college
 const createCollege = async (req, res) => {
-    const college = new College(req.body);
+    const { _id, name, city, state, courses, established, rating, reviews } = req.body;
+
+    const collegeData = {
+        _id,
+        name,
+        city,
+        state,
+        courses: courses || [],      
+        established: established || 0,
+        rating: rating || 0,          
+        reviews: reviews || [],       
+    };
+
+    const college = new College(collegeData);
     try {
         await college.save();
         res.status(201).json({ message: 'College created successfully', college });
@@ -54,7 +71,6 @@ const createCollege = async (req, res) => {
         res.status(500).json({ message: 'Error creating college' });
     }
 };
-
 // Update a college by ID
 const updateCollege = async (req, res) => {
     const collegeId = req.params.id;

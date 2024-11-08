@@ -1,26 +1,22 @@
-const jwt = require('jsonwebtoken');
-
-const checkAdmin = (req, res, next) => {
-    // Bypass check in development mode
-    if (process.env.NODE_ENV === 'development nodemon index.js') {
-        req.user = { id: 'devUserId', role: 'admin' }; // Mock admin user for development
-        return next();
-    }
-
-    const token = req.headers.authorization?.split(" ")[1];
-    if (!token) {
-        return res.status(401).json({ message: 'Access denied' });
-    }
-
+const checkAdmin = async (req, res, next) => {
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        if (decoded.role !== 'admin') {
-            return res.status(403).json({ message: 'Forbidden' });
+        const userRole = req.headers['x-user-role']; // Extract role from headers
+        console.log('User Role:', userRole);  // Log role for debugging
+
+        if (!userRole) {
+            return res.status(400).json({ message: 'Role not provided' });
         }
-        req.user = decoded;
-        next();
+
+        // Allow access only if the role is 'admin'
+        if (userRole === 'admin') {
+            return next(); 
+        }
+
+        // Deny access for any other role
+        return res.status(403).json({ message: 'Access denied. Insufficient permissions.' });
     } catch (error) {
-        res.status(401).json({ message: 'Invalid token' });
+        console.error('Error in checkAdmin middleware:', error);
+        return res.status(500).json({ message: 'Internal server error' });
     }
 };
 

@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
 // Get a user by ID
@@ -19,35 +18,27 @@ const getUserById = async (req, res) => {
 // Get all users with optional filters for role, name, or email
 const filterUsers = async (req, res) => {
     const filter = {};
+
+    // Apply filters based on query parameters
     if (req.query.role) filter.role = req.query.role;
-    if (req.query.name) filter.name = { $regex: req.query.name, $options: 'i' };
-    if (req.query.email) filter.email = { $regex: req.query.email, $options: 'i' };
+    if (req.query.name) filter.name = { $regex: req.query.name, $options: 'i' };  // Case-insensitive search
+    if (req.query.email) filter.email = { $regex: req.query.email, $options: 'i' };  // Case-insensitive search
 
     try {
+        // Query the database to find users matching the filters
         const users = await User.find(filter);
-        res.json(users);
+        res.json(users);  // Respond with the filtered users
     } catch (error) {
         console.error('Error fetching users:', error);
         res.status(500).json({ message: 'Error fetching users' });
     }
 };
 
-// Generate a token for a new user
-const generateToken = (user) => {
-    const payload = { id: user._id, role: user.role };
-    return jwt.sign(payload, process.env.JWT_SECRET || 'defaultsecret', { expiresIn: '1d' });
-};
-
-// Create a new user with token generation
-// Create a new user with token generation
+// Create a new user
 const createUser = async (req, res) => {
     const user = new User(req.body);
     try {
         await user.save();
-        
-        // Generate token (but do not save it in the database)
-        const token = generateToken(user);
-
         res.status(201).json({
             message: 'User created successfully',
             user: {
@@ -55,8 +46,7 @@ const createUser = async (req, res) => {
                 name: user.name,
                 email: user.email,
                 role: user.role
-            },
-            token // Send the token directly in the response
+            }
         });
     } catch (error) {
         console.error('Error creating user:', error);
@@ -66,8 +56,6 @@ const createUser = async (req, res) => {
         res.status(500).json({ message: 'Error creating user' });
     }
 };
-
-
 
 // Update user by ID (only accessible to admins)
 const updateUser = async (req, res) => {
