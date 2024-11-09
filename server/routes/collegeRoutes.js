@@ -6,8 +6,8 @@ const errorHandler = require('../middleware/errorHandler');
 const router = express.Router();
 
 // Public routes
-router.get('getCollege/:id', dataById);
-router.get('/filterColege', filterData);
+router.get('/getCollege/:id', dataById);
+router.get('/filterCollege', filterData);
 
 // Admin-only routes
 router.post('/createCollege', checkCollegeAdmin, createCollege);

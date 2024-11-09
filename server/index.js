@@ -2,9 +2,10 @@ require('dotenv').config({ path: '../.env.local' });
 const express = require('express');
 const bodyParser = require('body-parser');
 const collegeRoutes = require('./routes/collegeRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
 const userRoutes = require('./routes/userRoutes');
 const errorHandler = require('./middleware/errorHandler');
-const connectDB = require('./config/db');  
+const connectDB = require('./config/db');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -17,8 +18,9 @@ app.use(bodyParser.json());
 
 
 // Routes
-app.use('/api/colleges', collegeRoutes);  
-app.use('/api/users', userRoutes);  
+app.use('/api/colleges', collegeRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/reviews', reviewRoutes);
 
 // Error handling middleware
 app.use(errorHandler);

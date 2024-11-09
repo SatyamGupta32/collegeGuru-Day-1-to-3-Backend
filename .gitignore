@@ -19,3 +19,5 @@ Thumbs.db
 #remove dummy data
 server/collegeData.js
 server/userData.js
+server/scripts/
+server/reviewData.js
