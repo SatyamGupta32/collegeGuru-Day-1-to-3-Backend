@@ -4,7 +4,7 @@ This project is a simple College Management System with a React frontend and a b
 Technologies Used:
 - Frontend: React + Vite
 - Backend: Express.js + MongoDB
-- Database: MongoDB (for storing college data)
+- Database: MongoDB (for storing college data) 
 
 
 ## Prerequisites:
