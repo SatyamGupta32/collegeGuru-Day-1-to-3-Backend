@@ -19,7 +19,7 @@ Technologies Used:
 git clone https://github.com/SatyamGupta32/collegeGuru-Day-1-and-2-Backend.git
 ```
 ``` 
-cd  collegeGuru-Day-1-and-2-Backend
+cd  collegeGuru-Day-1-and-4-Backend
 ```
 ### Install dependencies:
 ```
