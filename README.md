@@ -70,5 +70,25 @@ The following API endpoints were implemented on Day 1:
 #### Task 2: Detailed College Data Endpoint
 - GET /colleges/:id: Fetches a specific college by its ID from the database.
 
+### Day 3: Request Validation and User Roles
+#### Task 1: Request Validation and Error Handling
+- Added middleware for request validation to ensure that incoming data is properly formatted and required fields are present.
+- Implemented centralized error handling middleware to catch and handle errors gracefully, providing clear error responses to the client.
+
+#### Task 2: User Role Management
+- Developed middleware for role-based access control.
+    - Created a roleCheck middleware to differentiate between admin and user roles.
+    - Restricted access to certain endpoints based on user roles, allowing only admins to perform certain actions (like creating or updating college data).
+
+### Day 4: User-Generated Content (Reviews and Ratings)
+#### Task 1: Review and Rating APIs
+- Created APIs to enable users to add reviews and ratings for colleges.
+    - POST /:collegeId/:userId/review: Allows users to submit a review for a college. Only authenticated users can add reviews.
+    - GET /:collegeId/reviews: Fetches all reviews for a specific college.
+
+#### Task 2: Testing and Final Adjustments
+- Tested all college-related API functionalities, including the new review and rating endpoints.
+- Refined validation and error handling for the review APIs to ensure data integrity and clear error messages for users.
+
 ## License
 This project is licensed under the MIT License. See the LICENSE file for details.
