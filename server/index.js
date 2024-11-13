@@ -6,6 +6,7 @@ const reviewRoutes = require('./routes/reviewRoutes');
 const userRoutes = require('./routes/userRoutes');
 const errorHandler = require('./middleware/errorHandler');
 const connectDB = require('./config/db');
+const path = require('path');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -16,6 +17,7 @@ connectDB();
 // Middleware to parse JSON request bodies
 app.use(bodyParser.json());
 
+app.use(express.static(path.join(__dirname, '../public')));
 
 // Routes
 app.use('/api/colleges', collegeRoutes);

@@ -8,10 +8,21 @@ const getUserById = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        res.json(user);
+        res.json({
+            message: 'User retrieved successfully',
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                profilePicture: user.profilePicture,
+                preferences: user.preferences,
+                notifications: user.notifications,
+            },
+        });
     } catch (error) {
         console.error('Error fetching user:', error);
-        res.status(500).json({ message: 'Server Error' });
+        res.status(500).json({ message: 'Server error while fetching user' });
     }
 };
 
@@ -26,17 +37,37 @@ const filterUsers = async (req, res) => {
 
     try {
         // Query the database to find users matching the filters
-        const users = await User.find(filter);
-        res.json(users);  // Respond with the filtered users
+        const users = await User.find(filter).select('-password'); // Exclude password field
+        res.json({
+            message: 'Users retrieved successfully',
+            users,
+        });
     } catch (error) {
         console.error('Error fetching users:', error);
-        res.status(500).json({ message: 'Error fetching users' });
+        res.status(500).json({ message: 'Server error while fetching users' });
     }
 };
 
 // Create a new user
 const createUser = async (req, res) => {
-    const user = new User(req.body);
+    const { name, email, password, role, profilePicture, preferences, notifications } = req.body;
+
+    // Construct user data with defaults for optional fields
+    const userData = {
+        name,
+        email,
+        password,
+        role: role || 'student', // Default to 'student' if role not provided
+        profilePicture: profilePicture || '', // Optional, default to an empty string
+        preferences: {
+            savedCourses: preferences?.savedCourses || [], // Optional, default to an empty array
+            savedColleges: preferences?.savedColleges || [], // Optional, default to an empty array
+        },
+        notifications: notifications || [], // Optional, default to an empty array
+    };
+
+    const user = new User(userData);
+
     try {
         await user.save();
         res.status(201).json({
@@ -45,15 +76,21 @@ const createUser = async (req, res) => {
                 id: user._id,
                 name: user.name,
                 email: user.email,
-                role: user.role
-            }
+                role: user.role,
+                profilePicture: user.profilePicture,
+                preferences: user.preferences,
+                notifications: user.notifications,
+            },
         });
     } catch (error) {
         console.error('Error creating user:', error);
+
+        // Handle duplicate email error
         if (error.code === 11000) {
             return res.status(400).json({ message: 'Email already exists' });
         }
-        res.status(500).json({ message: 'Error creating user' });
+
+        res.status(500).json({ message: 'Server error while creating user' });
     }
 };
 
@@ -61,14 +98,25 @@ const createUser = async (req, res) => {
 const updateUser = async (req, res) => {
     const userId = req.params.id;
     try {
-        const user = await User.findByIdAndUpdate(userId, req.body, { new: true });
+        const user = await User.findByIdAndUpdate(userId, req.body, { new: true }).select('-password');
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        res.json({ message: 'User updated successfully', user });
+        res.json({
+            message: 'User updated successfully',
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                profilePicture: user.profilePicture,
+                preferences: user.preferences,
+                notifications: user.notifications,
+            },
+        });
     } catch (error) {
         console.error('Error updating user:', error);
-        res.status(500).json({ message: 'Error updating user' });
+        res.status(500).json({ message: 'Server error while updating user' });
     }
 };
 
