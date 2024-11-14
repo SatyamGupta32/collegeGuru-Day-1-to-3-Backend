@@ -50,6 +50,7 @@ const getReviews = async (req, res) => {
         // Extract collegeId from the request parameters
         const college = await College.findById(req.params.collegeId).populate({
             path: 'reviews',
+            select: 'review rating userId',
             populate: {
                 path: 'userId',
                 select: 'name'  // Optionally populate user name or any other fields

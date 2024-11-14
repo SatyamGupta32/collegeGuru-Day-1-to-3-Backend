@@ -15,9 +15,10 @@ Thumbs.db
 
 # Build output
 /dist
+/build
 
-#remove dummy data
+# Dummy data and scripts (only needed for development)
 server/collegeData.js
 server/userData.js
-server/scripts/
 server/reviewData.js
+server/scripts/
