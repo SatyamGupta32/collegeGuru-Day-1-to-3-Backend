@@ -17,6 +17,9 @@ Thumbs.db
 /dist
 /build
 
+#ignore public files
+public/images/
+
 # Dummy data and scripts (only needed for development)
 server/collegeData.js
 server/userData.js
