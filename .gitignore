@@ -24,4 +24,5 @@ public/images/
 server/collegeData.js
 server/userData.js
 server/reviewData.js
+server/courseData.js
 server/scripts/
