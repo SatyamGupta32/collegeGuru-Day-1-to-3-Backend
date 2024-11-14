@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { getAllCourses, getCourseById, createCourse, updateCourse, deleteCourse, } = require('../controller/courseController');
-const validateRequest = require('../middleware/validateRequest'); // if you need request validation
-const checkAdmin = require('../middleware/checkAdmin') // if you need role-based access control
+const checkAdmin = require('../middleware/checkAdmin');
 
 // GET all courses
 router.get('/', getAllCourses);
@@ -11,10 +10,10 @@ router.get('/', getAllCourses);
 router.get('/:id', getCourseById);
 
 // POST a new course
-router.post('/', checkAdmin, validateRequest, createCourse);
+router.post('/', checkAdmin, createCourse);
 
 // PUT to update a course by ID
-router.put('/:id', checkAdmin, validateRequest, updateCourse);
+router.put('/:id', checkAdmin, updateCourse);
 
 // DELETE a course by ID
 router.delete('/:id', checkAdmin, deleteCourse);
